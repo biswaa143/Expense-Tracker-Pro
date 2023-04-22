@@ -1,0 +1,80 @@
+.login {
+    padding-top: 200px;
+    display: block;
+    width: 100%;
+    height: 450px;
+    background-color: blueviolet;
+}
+
+.form{
+   
+    background-color: white;
+    width: 20%;
+    margin: auto;
+    height: 270px;
+    text-align: center;
+    padding-top: 20px;
+    border-radius: 5px;
+}
+
+.form h3 {
+    padding: 5px 0 15px;
+    color: grey;
+
+}
+
+.form input {
+    padding: 4px;
+    margin-bottom: 10px;
+    margin-top: 5px;
+    width: 80%;
+    border: 1px solid grey;
+}
+
+.loginbutton {
+    margin-top: 10px;
+    padding: 7px 5px;
+    width: 80%;
+    border-radius: 7px;
+    border: 0;
+    background-color:rgb(35, 98, 158);
+    color:white;
+    cursor: pointer;
+}
+.forgotpassword {
+    border: none;
+    background-color: white;
+    color: blue;
+}
+.forgotpassword:hover{
+    background-color:white;
+    cursor: pointer;
+}
+.form p {
+    margin-top: 15px;
+}
+
+
+.loginbutton:hover{
+    background-color: rgb(40, 40, 112);
+}
+/* body{
+    background-color: blueviolet;
+} */
+
+div p{
+    text-align: center;
+border: 1px solid white;
+width: 20%;
+margin: auto;
+margin-top: 15px;
+padding: 10px 0px;
+background-color: white;
+color: grey;
+border-radius: 5px;
+}
+p span{
+    color: blue;
+    cursor: pointer;
+    
+}
