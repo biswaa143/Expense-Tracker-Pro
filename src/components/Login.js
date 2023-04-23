@@ -1,14 +1,17 @@
-import React, { useRef, useState } from "react";
-// import {useNavigate} from "react-router-dom";
-import axios from "axios";
+import React, { useContext, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import classes from "./Login.module.css";
+import AuthContext from "./store/auth-context";
+// import {AiOutlineEyeInvisible} from "react-icons/ai";
 
 const Login = () => {
   const emailInputRef = useRef();
   const passwordInputRef = useRef();
   const confirmPasswordRef = useRef();
+  const authCtx = useContext(AuthContext);
   const [isLogin, setIsLogin] = useState(false);
-//   const navigate = useNavigate();
+  const [isloading, setIsLoading] = useState(false);
+  const navigate = useNavigate();
 
   const switchLoginHandler = () => {
     setIsLogin((prevState) => !prevState);
@@ -16,6 +19,7 @@ const Login = () => {
   const formSubmitHandler = (event) => {
     event.preventDefault();
 
+    setIsLoading(true);
     let url;
     if (isLogin) {
       url =
@@ -31,36 +35,60 @@ const Login = () => {
     if (password !== confirmPassword) {
       alert("Entered password is incorrect");
     }
-    axios
-      .post(url, {
+    fetch(url, {
+      method: "POST",
+      body: JSON.stringify({
         email: email,
         password: password,
         returnSecureToken: true,
-      })
-      .then((response) => {
-        if (response.status === 200) {
-          const token = response.data.idToken;
-
-          localStorage.setItem("token", token);
-        //   history.push("/welcome");
-          console.log("User has successfully signed up");
-          console.log(response);
+      }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((res) => {
+        setIsLoading(false);
+        if (res.ok) {
+          return res.json();
+        } else {
+          return res.json().then((data) => {
+            // show an error modal
+            let errorMessage =
+              "Authentication failed: Please check your Email or Password!";
+            throw new Error(errorMessage);
+          });
         }
       })
+      .then((data) => {
+        authCtx.login(data.idToken);
+        console.log('hi');
+        navigate('/Welcome');
+      })
       .catch((err) => {
-        alert("Authentication Failed");
+        alert(err.message);
       });
   };
-
   return (
     <div className={classes.login}>
       <form onSubmit={formSubmitHandler} className={classes.form}>
         <h3>{isLogin ? "Login" : "Sign Up"}</h3>
         <input type="email" placeholder="Email Id" ref={emailInputRef} />
-        <input type="password" placeholder="password" minLength="6" ref={passwordInputRef} />
-        <input type="text" placeholder="Confirm Password" minLength="6" ref={confirmPasswordRef} />
+        <input
+          type="password"
+          placeholder="password"
+          minLength="6"
+          ref={passwordInputRef}
+        />
+        <input
+          type="text"
+          placeholder="Confirm Password"
+          minLength="6"
+          ref={confirmPasswordRef}
+        />
         <button className={classes.forgotpassword}>Forgot Password</button>
-        <button className={classes.loginbutton}>{isLogin ? "Login" : "Sign Up"}</button>
+        <button className={classes.loginbutton}>
+          {isLogin ? "Login" : "Sign Up"}
+        </button>
       </form>
       <div>
         <p>
