@@ -1,27 +1,32 @@
 import React from "react";
 import { useRef } from "react";
-import axios from "axios";
 import classes from "./UpdateProfile.module.css";
 
 const Updateprofile = () => {
   const nameInputRef = useRef();
   const profilePhotoRef = useRef();
 
-  const updateProfileHandler = (e) => {
-    e.preventDefault();
+  const updateProfileHandler = (event) => {
+    event.preventDefault();
+
+    let url;
+    url =
+      "https://identitytoolkit.googleapis.com/v1/accounts:update?key=AIzaSyCrU_dpYTl7LWLCqRzlvwg6Qb1d6UpAfp0";
     const fullName = nameInputRef.current.value;
     const profilePhoto = profilePhotoRef.current.value;
 
-    axios
-      .post(
-        "https://identitytoolkit.googleapis.com/v1/accounts:update?key=AIzaSyCrU_dpYTl7LWLCqRzlvwg6Qb1d6UpAfp0",
-        {
-          idToken: localStorage.getItem("token"),
-          displayName: fullName,
-          photoUrl: profilePhoto,
-          returnSecureToken: true,
-        }
-      )
+    fetch(url, {
+      method: "POST",
+      body: JSON.stringify({
+        idToken: localStorage.getItem("token"),
+        displayName: fullName,
+        photoUrl: profilePhoto,
+        returnSecureToken: true,
+      }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
       .then((res) => {
         console.log(res.data);
       })
