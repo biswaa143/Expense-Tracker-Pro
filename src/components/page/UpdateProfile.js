@@ -1,32 +1,51 @@
-import React from "react";
-import { useRef } from "react";
+import axios from "axios";
+import React, { useEffect, useRef} from "react";
 import classes from "./UpdateProfile.module.css";
 
-const Updateprofile = () => {
+
+const UpdateProfile = () => {
   const nameInputRef = useRef();
   const profilePhotoRef = useRef();
+//   const [name, setName] = useState();
+//   const [photoUrl, setPhotoUrl] = useState();
 
-  const updateProfileHandler = (event) => {
-    event.preventDefault();
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      axios
+        .post(
+          "https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=AIzaSyCrU_dpYTl7LWLCqRzlvwg6Qb1d6UpAfp0",
+          {
+            idToken: token,
+          }
+        )
+        .then((res) => {
+          console.log(res.data.users[0].displayName);
+          console.log(res.data.users[0].photoUrl);
+          nameInputRef.current.value=res.data.users[0].displayName
+          profilePhotoRef.current.value =res.data.users[0].photoUrl
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  }, []);
 
-    let url;
-    url =
-      "https://identitytoolkit.googleapis.com/v1/accounts:update?key=AIzaSyCrU_dpYTl7LWLCqRzlvwg6Qb1d6UpAfp0";
+  const updateProfileHandler = (e) => {
+    e.preventDefault();
     const fullName = nameInputRef.current.value;
     const profilePhoto = profilePhotoRef.current.value;
 
-    fetch(url, {
-      method: "POST",
-      body: JSON.stringify({
-        idToken: localStorage.getItem("token"),
-        displayName: fullName,
-        photoUrl: profilePhoto,
-        returnSecureToken: true,
-      }),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
+    axios
+      .post(
+        "https://identitytoolkit.googleapis.com/v1/accounts:update?key=AIzaSyCrU_dpYTl7LWLCqRzlvwg6Qb1d6UpAfp0",
+        {
+          idToken: localStorage.getItem("token"),
+          displayName: fullName,
+          photoUrl: profilePhoto,
+          returnSecureToken: true,
+        }
+      )
       .then((res) => {
         console.log(res.data);
       })
@@ -49,13 +68,14 @@ const Updateprofile = () => {
         <button className={classes.cancelbutton}>Cancel</button>
         <form onSubmit={updateProfileHandler} className={classes.updateform}>
           <label htmlFor="name">Full Name</label>
-          <input type="text" ref={nameInputRef} />
+          <input type="text"  ref={nameInputRef} />
           <label htmlFor="profilephoto">Profile Photo URL</label>
-          <input type="text" ref={profilePhotoRef} />
+          <input type="text"  ref={profilePhotoRef} />
           <button className={classes.updatebutton}>Update</button>
         </form>
       </div>
     </div>
   );
 };
-export default Updateprofile;
+
+export default UpdateProfile;

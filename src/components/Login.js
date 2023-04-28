@@ -1,25 +1,25 @@
-import React, { useContext, useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useRef, useState } from "react";
 import classes from "./Login.module.css";
-import AuthContext from "./store/auth-context";
-// import {AiOutlineEyeInvisible} from "react-icons/ai";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
   const emailInputRef = useRef();
   const passwordInputRef = useRef();
   const confirmPasswordRef = useRef();
-  const authCtx = useContext(AuthContext);
   const [isLogin, setIsLogin] = useState(false);
-  const [isloading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
   const switchLoginHandler = () => {
     setIsLogin((prevState) => !prevState);
   };
-  const formSubmitHandler = (event) => {
-    event.preventDefault();
 
-    setIsLoading(true);
+  const resetPasswordPage = () => {
+    navigate("/resetpassword");
+  };
+  const formSubmitHandler = (e) => {
+    e.preventDefault();
+
     let url;
     if (isLogin) {
       url =
@@ -35,60 +35,52 @@ const Login = () => {
     if (password !== confirmPassword) {
       alert("Entered password is incorrect");
     }
-    fetch(url, {
-      method: "POST",
-      body: JSON.stringify({
+
+    axios
+      .post(url, {
         email: email,
         password: password,
         returnSecureToken: true,
-      }),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
-      .then((res) => {
-        setIsLoading(false);
-        if (res.ok) {
-          return res.json();
-        } else {
-          return res.json().then((data) => {
-            // show an error modal
-            let errorMessage =
-              "Authentication failed: Please check your Email or Password!";
-            throw new Error(errorMessage);
-          });
+      })
+      .then((response) => {
+        if (response.status === 200) {
+          const token = response.data.idToken;
+
+          localStorage.setItem("token", token);
+          navigate("/welcome");
+          console.log("User has successfully signed up");
+          console.log(response);
         }
       })
-      .then((data) => {
-        authCtx.login(data.idToken);
-        console.log('hi');
-        navigate('/Welcome');
-      })
       .catch((err) => {
-        alert(err.message);
+        alert("Authentication Failed: Please check your Email or Password");
       });
   };
+
   return (
     <div className={classes.login}>
       <form onSubmit={formSubmitHandler} className={classes.form}>
         <h3>{isLogin ? "Login" : "Sign Up"}</h3>
-        <input type="email" placeholder="Email Id" ref={emailInputRef} />
+        <input type="email" placeholder="Email" ref={emailInputRef} />
         <input
           type="password"
-          placeholder="password"
           minLength="6"
+          placeholder="Password"
           ref={passwordInputRef}
         />
         <input
           type="text"
-          placeholder="Confirm Password"
           minLength="6"
+          placeholder="Confirm Password"
           ref={confirmPasswordRef}
         />
-        <button className={classes.forgotpassword}>Forgot Password</button>
+        <button onClick={resetPasswordPage} className={classes.forgotpassword}>
+          Forgot password?
+        </button>
         <button className={classes.loginbutton}>
           {isLogin ? "Login" : "Sign Up"}
         </button>
+        {/* <p>{isLogin?'Dont have an account? ':'Already have an account? '}<span onClick={switchLoginHandler}>{isLogin?'Signup':'Login'}</span></p> */}
       </form>
       <div>
         <p>
@@ -101,4 +93,5 @@ const Login = () => {
     </div>
   );
 };
+
 export default Login;
