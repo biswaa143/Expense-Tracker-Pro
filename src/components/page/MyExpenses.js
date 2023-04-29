@@ -1,30 +1,27 @@
 import axios from "axios";
 import React, { useContext, useEffect } from "react";
-import ExpenseForm from "../components/ExpenseForm";
+import ExpenseForm from "../ExpenseForm";
 import ExpenseContext from "../store/expense-context";
 import classes from "./MyExpenses.module.css";
 
 const MyExpenses = () => {
-  
   const expenseCtx = useContext(ExpenseContext);
 
- useEffect(()=>{
-     axios
+  useEffect(() => {
+    axios
       .get(
-        "https://react-http-8e6c7-default-rtdb.firebaseio.com//expenses.json"
+        `https://user-profile-d36f6-default-rtdb.firebaseio.com/expenses/.json`
       )
       .then((res) => {
         console.log(res.data);
-        if(res.status===200){
-            expenseCtx.expenselist(res.data);
+        if (res.status === 200) {
+          expenseCtx.expenselist(res.data);
         }
-        
-        
       })
       .catch((err) => {
         console.log(err);
       });
-    },[])
+  }, []);
 
   const expenseList = expenseCtx.expenses.map((expense) => {
     return (

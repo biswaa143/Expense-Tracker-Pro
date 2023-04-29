@@ -9,6 +9,7 @@ const ExpenseContext = React.createContext({
 export const ExpenseContextProvider = (props) => {
   const [expenses, setExpenses] = useState([]);
   const [expenseData, setExpenseData] = useState([]);
+
   const addExpenseHandler = (expense) => {
     console.log(expense);
     setExpenses((prev) => {
