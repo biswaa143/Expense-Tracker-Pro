@@ -1,13 +1,15 @@
 import axios from "axios";
-import React, { useEffect, useRef} from "react";
+import React, { useEffect, useRef } from "react";
+import { Button } from "react-bootstrap";
 import classes from "./UpdateProfile.module.css";
-
+import { useNavigate } from "react-router-dom";
 
 const UpdateProfile = () => {
   const nameInputRef = useRef();
   const profilePhotoRef = useRef();
-//   const [name, setName] = useState();
-//   const [photoUrl, setPhotoUrl] = useState();
+  const navigate = useNavigate();
+  //   const [name, setName] = useState();
+  //   const [photoUrl, setPhotoUrl] = useState();
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -22,14 +24,19 @@ const UpdateProfile = () => {
         .then((res) => {
           console.log(res.data.users[0].displayName);
           console.log(res.data.users[0].photoUrl);
-          nameInputRef.current.value=res.data.users[0].displayName
-          profilePhotoRef.current.value =res.data.users[0].photoUrl
+          nameInputRef.current.value = res.data.users[0].displayName;
+          profilePhotoRef.current.value = res.data.users[0].photoUrl;
         })
         .catch((err) => {
           console.log(err);
         });
     }
   }, []);
+
+  const LogOutHandler = () => {
+    localStorage.removeItem('token');
+    navigate("/Login");
+  };
 
   const updateProfileHandler = (e) => {
     e.preventDefault();
@@ -58,6 +65,16 @@ const UpdateProfile = () => {
     <div className={classes.update}>
       <div className={classes.heading}>
         <p>Winners never quit.Quitters never win.</p>
+        <Button
+          style={{
+            backgroundColor: "red",
+            height: "25px",
+            marginLeft: "500px",
+          }}
+          onClick={LogOutHandler}
+        >
+          Log Out
+        </Button>
         <p className={classes.message}>
           Your profile is 64% completed.A complete profile has higher chances of
           landing a job.Complete now.
@@ -68,9 +85,9 @@ const UpdateProfile = () => {
         <button className={classes.cancelbutton}>Cancel</button>
         <form onSubmit={updateProfileHandler} className={classes.updateform}>
           <label htmlFor="name">Full Name</label>
-          <input type="text"  ref={nameInputRef} />
+          <input type="text" ref={nameInputRef} />
           <label htmlFor="profilephoto">Profile Photo URL</label>
-          <input type="text"  ref={profilePhotoRef} />
+          <input type="text" ref={profilePhotoRef} />
           <button className={classes.updatebutton}>Update</button>
         </form>
       </div>
