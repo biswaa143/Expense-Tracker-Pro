@@ -4,6 +4,7 @@ import { Routes, Route, Navigate } from "react-router-dom";
 import MyExpenses from "./components/page/MyExpenses";
 import Welcome from "./components/page/Welcome";
 import Updateprofile from "./components/page/UpdateProfile";
+import ForgotPassword from "./components/page/ForgotPassword";
 import { ExpenseContextProvider } from "./components/store/expense-context";
 
 const App = () => {
@@ -15,6 +16,7 @@ const App = () => {
         <Route path="/welcome" element={<Welcome />} />
         <Route path="/expenses" element={<MyExpenses />} />
         <Route path="/updateprofile" element={<Updateprofile />} />
+        <Route path="/resetpassword" element={<ForgotPassword />} />
       </Routes>
       <ExpenseContextProvider />
     </React.Fragment>
