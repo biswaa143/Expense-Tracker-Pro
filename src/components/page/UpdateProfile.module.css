@@ -90,3 +90,9 @@ div h3{
     border: 1px solid rgb(57, 182, 57);
     background-color:rgb(57, 182, 57);
 }
+
+.expensebutton {
+    border-radius: 7px;
+    background-color: yellow;
+    margin-left: 180px;
+}

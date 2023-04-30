@@ -3,6 +3,7 @@ import React, { useContext, useEffect } from "react";
 import ExpenseForm from "../ExpenseForm";
 import ExpenseContext from "../store/expense-context";
 import classes from "./MyExpenses.module.css";
+import { useNavigate } from "react-router-dom";
 
 const MyExpenses = () => {
   const expenseCtx = useContext(ExpenseContext);
@@ -10,7 +11,7 @@ const MyExpenses = () => {
   useEffect(() => {
     axios
       .get(
-        `https://user-profile-d36f6-default-rtdb.firebaseio.com/expenses/.json`
+        "https://expense-tracker-fb790-default-rtdb.firebaseio.com/expenses.json"
       )
       .then((res) => {
         console.log(res.data);
@@ -22,6 +23,12 @@ const MyExpenses = () => {
         console.log(err);
       });
   }, []);
+
+  const navigate = useNavigate();
+  const goToLoginPage = () => {
+    navigate("/login");
+  }
+  
 
   const expenseList = expenseCtx.expenses.map((expense) => {
     return (
@@ -43,6 +50,10 @@ const MyExpenses = () => {
         <h2>Category</h2>
       </div>
       <ul className={classes.expenselist}>{expenseList}</ul>
+      <h3>
+        Go to  
+        <span onClick={goToLoginPage}> Login page</span>
+      </h3>
     </div>
   );
 };

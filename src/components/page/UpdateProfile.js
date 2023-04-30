@@ -38,6 +38,10 @@ const UpdateProfile = () => {
     navigate("/Login");
   };
 
+  const expenseHandler = () => {
+    navigate("/expenses");
+  };
+
   const updateProfileHandler = (e) => {
     e.preventDefault();
     const fullName = nameInputRef.current.value;
@@ -82,13 +86,14 @@ const UpdateProfile = () => {
       </div>
       <div className={classes.box}>
         <h3>Contact Details</h3>
-        <button className={classes.cancelbutton}>Cancel</button>
+        <Button className={classes.cancelbutton}>Cancel</Button>
         <form onSubmit={updateProfileHandler} className={classes.updateform}>
           <label htmlFor="name">Full Name</label>
           <input type="text" ref={nameInputRef} />
           <label htmlFor="profilephoto">Profile Photo URL</label>
           <input type="text" ref={profilePhotoRef} />
-          <button className={classes.updatebutton}>Update</button>
+          <Button className={classes.updatebutton}>Update</Button>
+          <Button className={classes.expensebutton} onClick={expenseHandler}>My Expenses</Button>
         </form>
       </div>
     </div>

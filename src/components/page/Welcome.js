@@ -2,6 +2,7 @@ import axios from "axios";
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import classes from "./Welcome.module.css";
+import { Button } from "react-bootstrap";
 const Welcome = () => {
   const navigate = useNavigate();
 
@@ -36,9 +37,9 @@ const Welcome = () => {
         Your profile is incomplete.{" "}
         <span onClick={profileUpdateHandler}>Complete Now.</span>
       </h3>
-      <button onClick={verifyEmailHandler} className={classes.verifybutton}>
+      <Button onClick={verifyEmailHandler} className={classes.verifybutton}>
         Verify your Email
-      </button>
+      </Button>
     </div>
   );
 };
