@@ -92,7 +92,7 @@ const UpdateProfile = () => {
           <input type="text" ref={nameInputRef} />
           <label htmlFor="profilephoto">Profile Photo URL</label>
           <input type="text" ref={profilePhotoRef} />
-          <Button className={classes.updatebutton}>Update</Button>
+          <button className={classes.updatebutton}>Update</button>
           <Button className={classes.expensebutton} onClick={expenseHandler}>My Expenses</Button>
         </form>
       </div>
