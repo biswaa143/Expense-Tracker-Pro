@@ -22,7 +22,7 @@ const ExpenseForm = () => {
 
     axios
       .post(
-        "https://expense-tracker-fb790-default-rtdb.firebaseio.com/expenses.json",
+        "https://expense-tracker-pro-cc7d5-default-rtdb.firebaseio.com/expenses.json",
         {
           id: Math.random(),
           amount: amountInputRef.current.value,

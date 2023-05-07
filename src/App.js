@@ -9,17 +9,18 @@ import { ExpenseContextProvider } from "./components/store/expense-context";
 
 const App = () => {
   return (
-    <React.Fragment>
-      <Routes>
-        <Route path="/" element={<Navigate to="/login" />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/welcome" element={<Welcome />} />
-        <Route path="/expenses" element={<MyExpenses />} />
-        <Route path="/updateprofile" element={<Updateprofile />} />
-        <Route path="/resetpassword" element={<ForgotPassword />} />
-      </Routes>
-      <ExpenseContextProvider />
-    </React.Fragment>
+    <ExpenseContextProvider>
+      <React.Fragment>
+        <Routes>
+          <Route path="/" element={<Navigate to="/login" />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/welcome" element={<Welcome />} />
+          <Route path="/expenses" element={<MyExpenses />} />
+          <Route path="/updateprofile" element={<Updateprofile />} />
+          <Route path="/resetpassword" element={<ForgotPassword />} />
+        </Routes>
+      </React.Fragment>
+    </ExpenseContextProvider>
   );
 };
 
