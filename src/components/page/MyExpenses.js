@@ -32,7 +32,7 @@ const MyExpenses = (props) => {
         setLoading(false);
         setError(err.message);
       });
-  }, [expenseData]);
+  }, []);
 
   const navigate = useNavigate();
   const goToLoginPage = () => {
